@@ -11,6 +11,8 @@ export default function Navbar() {
   const { account } = useAccount()
   const { pathname } = useRouter()
 
+  console.log(account)
+
   return (
     <section>
       <div className="relative pt-6 px-4 sm:px-6 lg:px-8">
@@ -45,6 +47,7 @@ export default function Navbar() {
                     Loading...
                 </Button> :
                 account.data ?
+                
                 <Button
                   hoverable={false}
                   className="cursor-default">
