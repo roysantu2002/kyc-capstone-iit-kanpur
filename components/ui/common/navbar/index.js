@@ -10,8 +10,14 @@ export default function Navbar() {
   const { connect, isLoading, requireInstall } = useWeb3()
   const { account } = useAccount()
   const { pathname } = useRouter()
+  let path_name = ["bank-page", "customer-page", "/"];
 
-  console.log(account)
+  let result = path_name.every(i => pathname.includes(path_name[i]));
+
+  console.log(pathname.substring(1))
+  // const pathColor = "text-primary-500"
+
+  const pathColor = path_name.includes(pathname.substring(1)) ? 'text-gray-500' : 'text-primary-500'
 
   return (
     <section>
@@ -21,19 +27,19 @@ export default function Navbar() {
             <div>
               <ActiveLink href="/" >
                 <a
-                  className="font-medium mr-8 text-gray-500 hover:text-gray-900">
+                   className={`font-medium mr-8 hover:text-gray-900 ${pathColor}`}>
                   Home
                 </a>
               </ActiveLink>
               <ActiveLink href="/bank-page" >
                 <a
-                  className="font-medium mr-8 text-gray-500 hover:text-gray-900">
+                  className={`font-medium mr-8 hover:text-gray-900 ${pathColor}`}>
                   Bank
                 </a>
               </ActiveLink>
               <ActiveLink href="/customer-page" >
                 <a
-                  className="font-medium mr-8 text-gray-500 hover:text-gray-900">
+                   className={`font-medium mr-8 hover:text-gray-900 ${pathColor}`}>
                   Customer
                 </a>
               </ActiveLink>
