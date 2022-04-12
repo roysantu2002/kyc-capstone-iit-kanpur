@@ -6,7 +6,7 @@ contract DKYCVerification {
     address private _owner;
 
     constructor() {
-        _owner = msg.sender;
+        setContractOwner(msg.sender);
     }
 
     // create an 'onlyOwner' modifier that throws if called by any account other than the owner.
@@ -189,6 +189,16 @@ contract DKYCVerification {
             "Requested Customer is added"
         );
         return (_customerInfo[_customerName].kycStatus);
+    }
+
+    //getContractOwner
+    function getContractOwner() public view returns (address) {
+        return _owner;
+    }
+
+    //setContractOwner
+    function setContractOwner(address newOwner) private {
+        _owner = newOwner;
     }
 
     // checkBank

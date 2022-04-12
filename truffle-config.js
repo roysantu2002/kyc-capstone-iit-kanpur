@@ -7,7 +7,7 @@ const tokenKey = process.env["ENDPOINT_KEY"];
 
 
 module.exports = {
-  contracts_build_directory: "./public/contract",
+  contracts_build_directory: "./public/contracts",
   networks: {
     development: {
       host: "127.0.0.1",
