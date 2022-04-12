@@ -1,20 +1,64 @@
+import { useAccount } from "@components/hooks/web3"
+import React from 'react'
+import Button from '../button'
+import HeroButton from '../herobutton'
+import Section from "../section"
 
 
-
-
-export default function Hero() {
-
+const Hero = () => {
+   const { account } = useAccount()
   return (
-    <section className="lg:2/6 text-left my-28">
-      <div className="text-3xl font-semibold text-gray-900 leading-none">IIT Kanpur - Blockchain Capstone Project</div>
-      <div className="mt-6 text-xl font-light text-true-gray-500 antialiased">Decentralized KYC Verification.</div>
-      <div className="mt-5 sm:mt-8 flex lg:justify-start">
-        <div className="rounded-md shadow">
-          <a href="#" className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">
-            Get started
-          </a>
-        </div>
+ 
+     <>
+         <Section yPadding="pt-16 pb-16">
+               <div className="bg-white mt-5 p-10 shadow-2xl rounded-lg ">
+      <HeroButton
+        title={
+          <>
+            {'Every Project matters.'}<br className='md:hidden'></br>
+            <span className="text-primary-500">IIT Kanpur Blockchain Capstone Project</span>
+          </>
+        }
+        description="Decentralized KYC Verification."
+        button={
+        
+            <a>
+              <Button xl>START NOW!</Button>
+            </a>
+        
+        }
+      />
       </div>
-    </section>
+       <div className="bg-white mt-5 p-10 shadow-2xl rounded-lg ">
+   
+   
+       { account.data &&
+
+        <HeroButton
+        title={
+          <>
+        
+            <span className="text-primary-500">Metamask Connected as</span>
+          </>
+        }
+    
+        button={
+        
+            <a>
+               <Button xl>{account.data}</Button>
+            </a>
+        }
+           />
+
+      }
+     
+        </div>
+      </Section>
+      </>
+
+
+    
   )
 }
+
+export default Hero

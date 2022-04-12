@@ -1,10 +1,10 @@
 
 
-import { useWeb3 } from "@components/providers"
-import Link from "next/link"
-import { ActiveLink, Button } from "@components/ui/common"
 import { useAccount } from "@components/hooks/web3"
+import { useWeb3 } from "@components/providers"
+import { ActiveLink, Button } from "@components/ui/common"
 import { useRouter } from "next/router"
+
 
 export default function Navbar() {
   const { connect, isLoading, requireInstall } = useWeb3()
@@ -25,13 +25,13 @@ export default function Navbar() {
                   Home
                 </a>
               </ActiveLink>
-              <ActiveLink href="/marketplace" >
+              <ActiveLink href="/bank-page" >
                 <a
                   className="font-medium mr-8 text-gray-500 hover:text-gray-900">
                   Bank
                 </a>
               </ActiveLink>
-              <ActiveLink href="/blogs" >
+              <ActiveLink href="/customer-page" >
                 <a
                   className="font-medium mr-8 text-gray-500 hover:text-gray-900">
                   Customer
@@ -68,14 +68,14 @@ export default function Navbar() {
           </div>
         </nav>
       </div>
-      { account.data &&
+      {/* { account.data &&
         !pathname.includes("/marketplace") &&
         <div className="flex justify-end pt-1 sm:px-6 lg:px-8">
-          <div className="text-white bg-indigo-600 rounded-md p-2">
+          <div className="text-white bg-primary-500 rounded-md p-2">
             {account.data}
           </div>
         </div>
-      }
+      } */}
     </section>
   )
 }

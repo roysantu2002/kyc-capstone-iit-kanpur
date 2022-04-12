@@ -2,30 +2,31 @@
 // import { getAllCourses } from "@content/courses/fetcher"
 import { useWalletInfo } from "@components/hooks/web3";
 import { useWeb3 } from "@components/providers";
-import { Hero } from "@components/ui/common";
+import { CTABase, Hero } from "@components/ui/common";
+import { Fetures } from "@components/ui/features/Fetures";
 import { BaseLayout } from "@components/ui/layout";
+
 
 export default function Home() {
    const { web3, contract, requireInstall } = useWeb3()
   const { hasConnectedWallet, isConnecting, account } = useWalletInfo()
-  console.log(`this is the account `)
-  console.log(account.data)
+  // console.log(`this is the account `)
+  // console.log(account.data)
 
 
-  const _getOwner = async () => {
-    try {
-      const result = await contract.methods.getContractOwner().call()
-      return web3.utils.keccak256(result)
-    } catch(error) {
-      console.log(error.message)
-    }
-  }
-
-  console.log("current owner")
-    _getOwner()
+  // console.log("current owner")
+  //   _getOwner()
   return (
     <>
       <Hero />
+
+        <Fetures/>
+      <CTABase
+      title="JOIN US TODAY!"
+    />
+
+  
+
       {/* <CourseList
         courses={courses}
       >
