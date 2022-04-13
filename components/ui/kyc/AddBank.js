@@ -19,9 +19,10 @@ const validationSchema = Yup.object().shape({
 
 
 const AddBank = () => {
+    const [bankArray, setBankArray] = useState([]);
     const { web3, contract, requireInstall } = useWeb3()
      const { account } = useAccount()
-    console.log(account.data)
+    // console.log(account.data)
     const [loading, setLoading] = useState(false);
     const [address, setAddress] = useState("Contract Address Details");
       const {
@@ -36,25 +37,37 @@ const AddBank = () => {
 
   const onSubmit = async (data) => {
 
-    
+    console.log(data.address)
   
     try {
       const _owner = await contract.methods.getContractOwner().call();
       console.log(_owner);
-      await contract.methods.addNewBank(data.name, data.address).call();
-      const result =  await contract.methods.getBank(data.name).call();
-    console.log(result)
+      await contract.methods.addNewBank(data.name, data.address).send({from : _owner});
+    
     } catch(error) {
       console.log(error.message)
     }
+
+      const result =  await contract.methods.getBank(data.address).call();
+      setBankArray((oldArray) => oldArray.concat({
+          bankNumber: result[0],
+          bankName: result[1],
+          bankAddress: result[2],
+          kycPrivilege : result[3],
+          isAllowedToAddCustomer: result[4]
+      }))
+       
   
   }
+   console.log(bankArray)
 // 
 //     const onSubmit = async (data) => {
 // 
 //   };
 
     return(
+
+        <>
   <Section yPadding="pt-16 pb-16">
      
           <div className="flex flex-col max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800 md:flex-row md:h-48">
@@ -126,6 +139,38 @@ const AddBank = () => {
         
         
         </Section>
+
+        {bankArray && bankArray.length > 0 ?
+        <Section>
+         <div className="flex flex-col max-w-4xl mx-auto overflow-auto bg-white rounded-lg shadow-lg dark:bg-gray-800 md:flex-row md:h-48 px-1 py-1 md:px-1 md:py-0">
+    <table className="shadow-lg bg-white border-separate ">
+        <tbody>
+  <tr>
+    <th className="bg-blue-100 border text-left px-8 py-4">Bank Number</th>
+    <th className="bg-blue-100 border text-left px-8 py-4">Bank Name</th>
+    <th className="bg-blue-100 border text-left px-8 py-4">Bank Address</th>
+    <th className="bg-blue-100 border text-left px-8 py-4">Kyc Privilege</th>
+    <th className="bg-blue-100 border text-left px-8 py-4">Allowed Customer</th>
+  </tr>
+  {bankArray.map((bank => 
+      
+       <tr key={bank.bankNumber}>
+           {console.log(bank)}
+    <td className="border px-8 py-4">{bank.bankNumber}</td>
+    <td className="border px-8 py-4">{bank.bankName}</td>
+    <td className="border px-8 py-4">{bank.bankAddress}</td>
+    <td className="border px-8 py-4">{bank.kycPrivilege ? "Yes" : "No"}</td>
+    <td className="border px-8 py-4">{bank.isAllowedToAddCustomer ? "Yes" : "No"}</td>
+  </tr>
+
+))}
+ </tbody>
+</table>
+</div>
+</Section>
+: null}
+
+</>
     )
 
     }

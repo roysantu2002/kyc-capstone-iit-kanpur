@@ -1,7 +1,5 @@
 
 // import { getAllCourses } from "@content/courses/fetcher"
-import { useWalletInfo } from "@components/hooks/web3";
-import { useWeb3 } from "@components/providers";
 import { CTABase } from "@components/ui/common";
 import { AddBank } from "@components/ui/kyc";
 import { BaseLayout } from "@components/ui/layout";
