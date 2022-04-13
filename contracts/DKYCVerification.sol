@@ -44,7 +44,7 @@ contract DKYCVerification {
         onlyOwner
     {
         require(
-            _checkBank(_bank[_bankAddress].bankName, _bankName),
+            !_checkBank(_bank[_bankAddress].bankName, _bankName),
             "This token already exists"
         );
         uint256 kycCounter = totalCount++;
@@ -55,6 +55,11 @@ contract DKYCVerification {
             isAllowedToAddCustomer: true,
             kycPrivilege: true
         });
+    }
+
+    //getBank
+    function getBank(address _address) public view returns (string memory) {
+        return _bank[_address].bankName;
     }
 
     // blockBankFromKYC

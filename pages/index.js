@@ -4,6 +4,7 @@ import { useWalletInfo } from "@components/hooks/web3";
 import { useWeb3 } from "@components/providers";
 import { CTABase, Hero } from "@components/ui/common";
 import { Fetures } from "@components/ui/features/Fetures";
+import { Address, Owner } from "@components/ui/kyc";
 import { BaseLayout } from "@components/ui/layout";
 
 
@@ -19,7 +20,8 @@ export default function Home() {
   return (
     <>
       <Hero />
-
+     <Owner/>
+     <Address/>
         <Fetures/>
       <CTABase
       title="JOIN US TODAY!"

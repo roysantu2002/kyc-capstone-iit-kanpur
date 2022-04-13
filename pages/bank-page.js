@@ -3,8 +3,8 @@
 import { useWalletInfo } from "@components/hooks/web3";
 import { useWeb3 } from "@components/providers";
 import { CTABase } from "@components/ui/common";
-import { Owner } from "@components/ui/kyc";
 import { BaseLayout } from "@components/ui/layout";
+
 
 export default function BankPage() {
    const { web3, contract, requireInstall } = useWeb3()
@@ -26,7 +26,7 @@ export default function BankPage() {
 //     _getOwner()
   return (
     <>
-     <Owner/>
+
       <CTABase
       title="JOIN US TODAY!"
     />
