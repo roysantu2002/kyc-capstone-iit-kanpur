@@ -70,13 +70,17 @@ contract DKYCVerification {
         returns (
             uint256,
             string memory,
-            address
+            address,
+            bool,
+            bool
         )
     {
         return (
             _bank[_address].bankNumber,
             _bank[_address].bankName,
-            _bank[_address].bankAddress
+            _bank[_address].bankAddress,
+            _bank[_address].kycPrivilege,
+            _bank[_address].isAllowedToAddCustomer
         );
     }
 
