@@ -3,20 +3,19 @@
 import { useWalletInfo } from "@components/hooks/web3";
 import { useWeb3 } from "@components/providers";
 import { CTABase } from "@components/ui/common";
+import { AddBank } from "@components/ui/kyc";
 import { BaseLayout } from "@components/ui/layout";
 
 
 export default function BankPage() {
-   const { web3, contract, requireInstall } = useWeb3()
-  const { hasConnectedWallet, isConnecting, account } = useWalletInfo()
-//   console.log(`this is the account `)
-//   console.log(account.data)
+//    const { web3, contract, requireInstall } = useWeb3()
+//   const { hasConnectedWallet, isConnecting, account } = useWalletInfo()
 // 
-// 
-//   const _getOwner = async () => {
+//   const _addBank = async () => {
 //     try {
-//       const result = await contract.methods.getContractOwner().call()
-//       return web3.utils.keccak256(result)
+//       await contract.methods.addNewBank(data.name, data.address);
+//       result =  await contract.methods.getBank(_bankOne);
+//      console.log(result)
 //     } catch(error) {
 //       console.log(error.message)
 //     }
@@ -26,6 +25,7 @@ export default function BankPage() {
 //     _getOwner()
   return (
     <>
+    <AddBank/>
 
       <CTABase
       title="JOIN US TODAY!"
