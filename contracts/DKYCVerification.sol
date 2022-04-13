@@ -4,9 +4,13 @@ pragma solidity >=0.4.22 <0.9.0;
 contract DKYCVerification {
     //'_owner' variable of type address with a public getter function
     address private _owner;
+    // number of the total bank + kycCounter
+    uint256 private randomOne;
+    uint256 private kycCounter;
 
     constructor() {
         setContractOwner(msg.sender);
+        randomOne = 100;
     }
 
     // create an 'onlyOwner' modifier that throws if called by any account other than the owner.
@@ -17,6 +21,7 @@ contract DKYCVerification {
 
     // Bank struct
     struct Bank {
+        uint256 bankNumber;
         string bankName;
         uint256 kycCounter;
         address bankAddress;
@@ -24,11 +29,9 @@ contract DKYCVerification {
         bool kycPrivilege;
     }
 
-    // number of the total bank + kycCounter
-    uint256 private totalCount;
-
     // Customer struct
     struct Customer {
+        uint256 customerNumber;
         string customerName;
         string customerData;
         address customerBank;
@@ -44,11 +47,14 @@ contract DKYCVerification {
         onlyOwner
     {
         require(
-            !_checkBank(_bank[_bankAddress].bankName, _bankName),
+            !_check(_bank[_bankAddress].bankName, _bankName),
             "This token already exists"
         );
-        uint256 kycCounter = totalCount++;
+        randomOne = randomOne + 4;
+        kycCounter = kycCounter + 1;
+
         _bank[_bankAddress] = Bank({
+            bankNumber: randomOne,
             bankName: _bankName,
             kycCounter: kycCounter,
             bankAddress: _bankAddress,
@@ -58,8 +64,20 @@ contract DKYCVerification {
     }
 
     //getBank
-    function getBank(address _address) public view returns (string memory) {
-        return _bank[_address].bankName;
+    function getBank(address _address)
+        public
+        view
+        returns (
+            uint256,
+            string memory,
+            address
+        )
+    {
+        return (
+            _bank[_address].bankNumber,
+            _bank[_address].bankName,
+            _bank[_address].bankAddress
+        );
     }
 
     // blockBankFromKYC
@@ -68,10 +86,7 @@ contract DKYCVerification {
         onlyOwner
         returns (int256)
     {
-        require(
-            _bank[_bankAddress].bankAddress != address(0),
-            "Bank details not found"
-        );
+        require(_bank[_bankAddress].bankNumber != 0, "Bank details not found");
         _bank[_bankAddress].kycPrivilege = false;
         return 1;
     }
@@ -82,10 +97,7 @@ contract DKYCVerification {
         onlyOwner
         returns (int256)
     {
-        require(
-            _bank[_bankAddress].bankAddress != address(0),
-            "Bank details not found"
-        );
+        require(_bank[_bankAddress].bankNumber != 0, "Bank details not found");
         _bank[_bankAddress].kycPrivilege = true;
         return 1;
     }
@@ -97,10 +109,7 @@ contract DKYCVerification {
         onlyOwner
         returns (int256)
     {
-        require(
-            _bank[_bankAddress].bankAddress != address(0),
-            "Bank details not found"
-        );
+        require(_bank[_bankAddress].bankNumber != 0, "Bank details not found");
         require(
             _bank[_bankAddress].isAllowedToAddCustomer,
             "Requested Bank is already blocked"
@@ -116,13 +125,10 @@ contract DKYCVerification {
         onlyOwner
         returns (int256)
     {
-        require(
-            _bank[_bankAddress].bankAddress != address(0),
-            "Bank details not found"
-        );
+        require(_bank[_bankAddress].bankNumber != 0, "Bank details not found");
         require(
             _bank[_bankAddress].isAllowedToAddCustomer,
-            "Requested Bank is already blocked"
+            "Requested Bank is already unblocked"
         );
         _bank[_bankAddress].isAllowedToAddCustomer = true;
         return 1;
@@ -138,12 +144,15 @@ contract DKYCVerification {
             _bank[msg.sender].isAllowedToAddCustomer,
             "Requested Bank is blocked adding new customers"
         );
+
         require(
-            _customerInfo[_customerName].customerBank == address(0),
-            "Requested Customer  exists"
+            !_check(_customerInfo[_customerName].customerName, _customerName),
+            "Requested Customer exists"
         );
+        randomOne = randomOne + 4;
 
         _customerInfo[_customerName] = Customer({
+            customerNumber: randomOne,
             customerName: _customerName,
             customerData: _customerData,
             customerBank: msg.sender,
@@ -155,13 +164,18 @@ contract DKYCVerification {
     function viewCustomerData(string memory _customerName)
         public
         view
-        returns (string memory, bool)
+        returns (
+            uint256,
+            string memory,
+            bool
+        )
     {
         require(
-            _customerInfo[_customerName].customerBank != address(0),
+            _customerInfo[_customerName].customerNumber != 0,
             "Requested Customer not found"
         );
         return (
+            _customerInfo[_customerName].customerNumber,
             _customerInfo[_customerName].customerData,
             _customerInfo[_customerName].kycStatus
         );
@@ -175,7 +189,7 @@ contract DKYCVerification {
     {
         require(
             _bank[msg.sender].kycPrivilege,
-            "Requested Bank have no KYC Privilege"
+            "Requested Bank have already activated KYC Privilege"
         );
         _customerInfo[_customerName].kycStatus = true;
         _bank[msg.sender].kycCounter++;
@@ -190,8 +204,8 @@ contract DKYCVerification {
         returns (bool)
     {
         require(
-            _customerInfo[_customerName].customerBank != address(0),
-            "Requested Customer is added"
+            _customerInfo[_customerName].customerNumber != 0,
+            "Requested Customer is not added"
         );
         return (_customerInfo[_customerName].kycStatus);
     }
@@ -207,15 +221,15 @@ contract DKYCVerification {
     }
 
     // checkBank
-    function _checkBank(string memory _bankOne, string memory _bankTwo)
+    function _check(string memory _a, string memory _b)
         private
         pure
         returns (bool)
     {
-        if (bytes(_bankOne).length != bytes(_bankTwo).length) {
+        if (bytes(_a).length != bytes(_b).length) {
             return false;
         } else {
-            return keccak256(bytes(_bankOne)) == keccak256(bytes(_bankTwo));
+            return keccak256(bytes(_a)) == keccak256(bytes(_b));
         }
     }
 }

@@ -35,8 +35,8 @@ contract('DKYCVerification', accounts => {
 		catch (e) {
 
 		}
-          let _name = await _contract.getBank(_bankOne);
-         assert.equal("Bank One", _name, "Incorrect bank name");
+          let _bank = await _contract.getBank(_bankOne);
+         assert.equal("Bank One", _bank[1], "Incorrect bank name");
         });
     })
 })
