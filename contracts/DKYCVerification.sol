@@ -171,6 +171,7 @@ contract DKYCVerification {
         returns (
             uint256,
             string memory,
+            string memory,
             bool
         )
     {
@@ -180,6 +181,7 @@ contract DKYCVerification {
         );
         return (
             _customerInfo[_customerName].customerNumber,
+            _customerInfo[_customerName].customerName,
             _customerInfo[_customerName].customerData,
             _customerInfo[_customerName].kycStatus
         );
